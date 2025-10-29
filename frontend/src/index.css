@@ -1,0 +1,9 @@
+@import url(../node_modules/normalize.css/normalize.css);
+@import url(./assets/styles/header.css);
+@import url(./assets/styles/main.css);
+@import url(./assets/styles/footer.css);
+@import url(./assets/styles/loader.css);
+@import url(./assets/styles/pageNotFound.css);
+@import url(./assets/styles/popup.css);
+@import url(./assets/styles/signin.css);
+@import url(./assets/styles/signup.css);
