@@ -30,7 +30,15 @@ function Main() {
     }
   };
 
-  const handleShowMore = () => setVisibleCount((prev) => prev + 3);
+  const handleShowMore = () => {
+    setVisibleCount((prev) => prev + 3);
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth',
+      });
+    }, 100);
+  };
 
   return (
     <main className="main">
@@ -64,15 +72,10 @@ function Main() {
       )}
 
       {selectedMeal && (
-        <Popup onClose={() => setSelectedMeal(null)}>
-          <img
-            src={selectedMeal.strMealThumb}
-            alt={selectedMeal.strMeal}
-            className="popup__image"
-          />
-          <h2 className="popup__title">{selectedMeal.strMeal} </h2>
-          <p className="popup__text">{selectedMeal.strInstructions} </p>
-        </Popup>
+        <Popup
+          selectedMeal={selectedMeal}
+          onClose={() => setSelectedMeal(null)}
+        />
       )}
     </main>
   );

@@ -15,10 +15,11 @@ export const registerUser = async (req, res, next) => {
 
     const userExists = await User.findOne({ email });
 
-    if (userExists)
+    if (userExists) {
       return res
         .status(400)
         .send({ message: 'El usuario que intenta ingresar ya existe.' });
+    }
 
     const hashPass = await bcrypt.hash(password, 10);
     console.log('Password hasheada correctamente');
@@ -32,14 +33,15 @@ export const registerUser = async (req, res, next) => {
 
     console.log('Usuario creado:', user._id);
 
-    res.status(201).send({
+    const userData = {
+      _id: user._id,
+      name: `${user.firstName} ${user.lastName}`.trim(),
+      email: user.email,
+    };
+
+    res.status(201).json({
       token: token(user._id),
-      user: {
-        _id: user.id,
-        name: `${user.firstName} ${user.lastName}`.trim(),
-        email: user.email,
-        token: token(user._id),
-      },
+      user: userData,
     });
   } catch (error) {
     console.log('Error en registerUser:', error);
@@ -60,15 +62,18 @@ export const loginUser = async (req, res, next) => {
     if (!isMatch)
       return res.status(401).send({ message: 'Credenciales inválidas.' });
 
-    res.json({
+    const userData = {
+      _id: user._id,
+      name: `${user.firstName} ${user.lastName}`.trim(),
+      email: user.email,
+    };
+
+    res.status(200).json({
       token: token(user._id),
-      user: {
-        id: user._id,
-        name: `${user.firstName} ${user.lastName}`.trim(),
-        email: user.email,
-      },
+      user: userData,
     });
   } catch (error) {
+    console.error('Error en loginUser:', error);
     res.status(500).send({ message: 'Error interno al iniciar sesión.' });
     next(error);
   }

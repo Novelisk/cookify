@@ -27,7 +27,21 @@ function SignIn() {
     try {
       const data = await signIn(formData.email, formData.password);
 
-      login({ email: data.email }, data.token);
+      const userData = {
+        name: `${data.user.firstName} ${data.user.lastName}`.trim(),
+        email: data.user.email,
+      };
+
+      // login(userData, data.token);
+
+      login(
+        {
+          name: userData.name || userData.email.split('@')[0],
+          email: userData.email,
+        },
+        data.token
+      );
+
       navigate('/main');
     } catch (err) {
       console.error(err);

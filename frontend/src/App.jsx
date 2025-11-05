@@ -1,4 +1,4 @@
-import { Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { UserProvider, UserContext } from './context/UserContext';
 import { useContext } from 'react';
 
@@ -10,9 +10,14 @@ import PageNotFound from './pages/PageNotFound/PageNotFound';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import Loader from './components/Loader/Loader';
 
 function AppContent() {
-  const { user } = useContext(UserContext);
+  const { isCheckingAuth } = useContext(UserContext);
+
+  if (isCheckingAuth) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -25,7 +30,7 @@ function AppContent() {
         <Route
           path="/main"
           element={
-            <ProtectedRoute isLoggedIn={user.isLoggedIn}>
+            <ProtectedRoute>
               <Main />
             </ProtectedRoute>
           }
@@ -33,7 +38,7 @@ function AppContent() {
         <Route
           path="/userProfile"
           element={
-            <ProtectedRoute isLoggedIn={user.isLoggedIn}>
+            <ProtectedRoute>
               <UserProfile />
             </ProtectedRoute>
           }

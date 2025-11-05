@@ -28,8 +28,17 @@ export async function signUp({ name, email, password }) {
 }
 
 export async function validateToken(token) {
-  const res = await fetch(`${BASE_URL}/users/me`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return handleReponse(res);
+  try {
+    const res = await fetch(`${BASE_URL}/users/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.status === 401) {
+      localStorage.removeItem('jwt');
+      throw new Error('Token inválido o expirado.');
+    }
+    return handleReponse(res);
+  } catch (err) {
+    console.error('Error al validar token:', err);
+    throw err;
+  }
 }

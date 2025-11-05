@@ -74,40 +74,19 @@ export async function getUserProfile(token) {
   return handleResponse(res);
 }
 
-export async function addFavorite(token, recipeData) {
-  const res = await fetch(`${BACKEND_URL}/users/favorites`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(recipeData),
-  });
-  return handleResponse(res);
-}
-
-export async function removeFavorite(token, recipeId) {
-  const res = await fetch(`${BACKEND_URL}/users/favorites/${recipeId}`, {
-    method: 'DELETE',
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return handleResponse(res);
-}
-
-/*
 export async function addFavorite(token, meal) {
   try {
-    const res = await fetch(`${BACKEND_URL}/favorites`, {
+    const res = await fetch(`${BACKEND_URL}/users/favorites`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        mealId: meal.idMeal,
-        mealName: meal.strMeal,
-        mealThumb: meal.strMealThumb,
-        sourceUrl: meal.strSource || meal.strYoutube || '',
+        recipeId: meal.idMeal,
+        recipeName: meal.strMeal,
+        recipeThumb: meal.strMealThumb,
+        recipeLink: meal.strSource || meal.strYoutube || '',
       }),
     });
 
@@ -122,27 +101,30 @@ export async function addFavorite(token, meal) {
     throw err;
   }
 }
-  */
 
 export async function getFavorites(token) {
   try {
-    const res = await fetch(`${BACKEND_URL}/favorites`, {
-      headers: { Authorization: `Bearer ${token}` },
+    const res = await fetch(`${BACKEND_URL}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
-    const data = await res.json();
-    return data;
+    if (!res.ok) throw new Error('No se pudieron obtener recetas favoritas.');
+    const user = await res.json();
+    return user.favorites || [];
   } catch (err) {
     console.error('Error al obtener favoritos:', err);
     return [];
   }
 }
 
-/*
-export async function removeFavorite(token, mealId) {
+export async function removeFavorite(token, recipeId) {
   try {
-    const res = await fetch(`${BACKEND_URL}/favorites/${mealId}`, {
+    const res = await fetch(`${BACKEND_URL}/users/favorites/${recipeId}`, {
       method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (!res.ok) throw new Error('No se pudo eliminar de favoritos.');
     return true;
@@ -151,4 +133,3 @@ export async function removeFavorite(token, mealId) {
     return false;
   }
 }
-  */

@@ -1,16 +1,37 @@
-# React + Vite
+## Cookify -- Buscador y Gestor de Recetas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Nota aclaratoria: Busca recetas en inglés, es una api en inglés.
 
-Currently, two official plugins are available:
+# Entorno:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Frontend: https://cookify.mooo.com
+Backend: https://api.cookify.mooo.com
 
-## React Compiler
+# Descripción General:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Cookify es una app web que permite a los usuarios buscar recetas por nombre, ver sus detalles y guardar sus recetas favoritas en su perfil de usuario.
+El desarrollo fue con React y Vite en el frontend y Node.js, Express y MongoDB en el backend, con despliegue completo en una VM Ubuntu de Google Cloud, manejando seguridad HTTPS mediante Nginx y Certbot.
 
-## Expanding the ESLint configuration
+El sistema implementa: - Búsqueda de recetas desde TheMealDB API. - Visualización en tarjetas (cards) con imagen, nombre y descripción de la receta. - Sistema de usuarios con registro (signup), login y gestión de favoritos. - Persistencia en base de datos MongoDB. - Despliegue completo con Nginx, PM2 y Certbot SSL.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Arquitectura General:
+
+Frontend: React (Vite) en HTTPS cookify.mooo.com
+Backend: Express, MongoDB en HTTPS api.cookify.mooo.com
+Servidor: Nginx y PM2
+
+# Frontend:
+
+    - App.jsx maneja rutas protegidas con react-router-dom y ProtectedRoute.
+    - UserContext mantiene el estado global del usuario (login, token, favoritos).
+    - Main.jsx ejecuta búsqueda de recetas con searchMeals() en TheMealDB API.
+    - Popup.jsx muestra detalles de receta con opción de "Guardar en favoritos".
+    - UserProfile.jsx consulta y elimina favoritos almacenados en MongoDB.
+    - Loader.jsx es una animación de carga global.
+    - Diseño responsivo con media queries personalizadas (para visualización tanto en desktop, tablet y smartphone).
+
+# Backend:
+
+Endpoints principales: - POST /api/auth/signup (Registro de nuevo usuario). - POST /api/auth/signin (Inlicio de sesión (login)). - POST /api/users/favorites (Agregar receta a favoritos.) - GET /api/users/me (Perfil de usuario con JWT). - DELETE /api/users/favorites/:recipeId (Eliminar receta de favoritos mediate ID).
+
+Lógica del backend: - authController.js crea usuarios y tokens JWT con bcrypt y jsonwebtoken. - userController.js obtiene, guarda y elimina favoritos. - authMiddleware.js protege rutas mediante validación: Bearer Token. - validation.js implementación de Celebrate/Joi para validación de inputs. - User.js esquema Mongoose para el usuario. - Winston Logger registro de logs/errores. - PM2 mantiene el proceso activo.

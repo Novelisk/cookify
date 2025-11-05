@@ -24,14 +24,15 @@ export const validateUserProfile = celebrate({
 
 export const validateFavoriteAdd = celebrate({
   [Segments.BODY]: Joi.object().keys({
-    title: Joi.string().required(),
-    image: Joi.string().uri().required(),
-    apiLink: Joi.string().uri().required(),
+    recipeId: Joi.string().required(),
+    recipeName: Joi.string().required(),
+    recipeThumb: Joi.string().uri().required(),
+    recipeLink: Joi.string().uri().allow('').optional(),
   }),
 });
 
 export const validateRecipeId = celebrate({
   [Segments.BODY]: Joi.object().keys({
-    repiceId: Joi.string().hex().length(24).required(),
+    recipeId: Joi.string().required(),
   }),
 });

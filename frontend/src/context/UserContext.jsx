@@ -4,62 +4,73 @@ import { validateToken } from '../utils/auth';
 
 export const UserContext = createContext();
 
-export function UserProvider({ children }) {
-  const [user, setUser] = useState({
-    name: '',
-    email: '',
-    token: '',
-    isLoggedIn: false,
-  });
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
     const token = getToken();
     const storedUser = localStorage.getItem('user');
 
-    if (token && storedUser) {
-      validateToken(token)
-        .then((isValid) => {
-          if (isValid) {
-            const parsedUser = JSON.parse(storedUser);
-            setUser({
-              ...parsedUser,
-              token,
-              isLoggedIn: true,
-            });
-          } else {
-            logout();
-          }
-        })
-        .catch((err) => {
-          console.error('Error al validar el token:', err);
-          logout();
-        });
+    if (!token) {
+      setUser(null);
+      setIsCheckingAuth(false);
+      return;
     }
+
+    if (storedUser) {
+      const parsedUser = JSON.stringify(storedUser);
+      setUser({ ...parsedUser, token, isLoggedIn: true });
+      setIsCheckingAuth(false);
+    }
+
+    validateToken(token)
+      .then((data) => {
+        const userData = data.user || data;
+
+        if (userData && userData.email) {
+          const finalUser = {
+            name: userData.name || userData.email.split('@')[0],
+            email: userData.email,
+            token,
+            isLoggedIn: true,
+          };
+          setUser(finalUser);
+          localStorage.setItem('user', JSON.stringify(finalUser));
+        } else {
+          removeToken();
+          setUser(null);
+        }
+      })
+      .catch((err) => {
+        console.error('Error al validar el token:', err);
+        removeToken();
+        setUser(null);
+      })
+      .finally(() => setIsCheckingAuth(false));
   }, []);
 
   const login = (userData, token) => {
-    try {
-      setToken();
-      localStorage.setItem('user', JSON.stringify(userData));
-      setUser({ ...userData, token, isLoggedIn: true });
-    } catch (err) {
-      console.error('Error al guardar sesión:', err);
-    }
+    const finalUser = {
+      name: userData.name || userData.email.split('@')[0],
+      email: userData.email,
+      token,
+      isLoggedIn: true,
+    };
+    setToken(token);
+    localStorage.setItem('user', JSON.stringify(finalUser));
+    setUser(finalUser);
   };
 
   const logout = () => {
-    try {
-      removeToken();
-      localStorage.removeItem('user');
-      setUser({ name: '', email: '', token: '', isLoggedIn: false });
-    } catch (err) {
-      console.error('Error al cerrar sesión:', err);
-    }
+    removeToken();
+    localStorage.removeItem('user');
+    setUser(null);
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, isCheckingAuth }}>
       {children}
     </UserContext.Provider>
   );
-}
+};

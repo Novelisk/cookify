@@ -23,10 +23,28 @@ export const addFavorite = async (req, res) => {
 };
 
 export const removeFavorite = async (req, res) => {
-  const user = User.findById(req.user.id);
-  user.favorites = user.favorites.filter(
-    (fav) => fav.recipeId !== req.params.recipeId
-  );
-  await user.save();
-  res.send({ message: 'Receta eliminada de recetas favoritas.' });
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado.' });
+    }
+
+    const before = user.favorites.length;
+    user.favorites = user.favorites.filter(
+      (fav) => fav.recipeId !== req.params.recipeId
+    );
+
+    if (user.favorites.length === before) {
+      return res
+        .status(404)
+        .json({ message: 'Receta no encontrada en favoritos.' });
+    }
+
+    await user.save();
+
+    res.status(200).json({ message: 'Receta eliminada de favoritos.' });
+  } catch (err) {
+    console.error('Error al eliminar favorito:', err);
+    res.status(500).json({ message: 'Error interno al eliminar favorito.' });
+  }
 };

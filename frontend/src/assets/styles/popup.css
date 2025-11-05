@@ -22,11 +22,28 @@
   padding: 20px;
 }
 
+.popup__image {
+  object-fit: cover;
+  width: 100%;
+  height: 44vh;
+}
+
+.popup__title {
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.popup__text {
+  font-size: 18px;
+  text-align: left;
+}
+
 .popup__close {
   background-image: url('../images/close_icon.png');
   background-size: cover;
   background-position: center;
-  background-color: #000;
+  border-color: #000;
   background-color: transparent;
   width: 40px;
   height: 40px;
@@ -36,4 +53,105 @@
   right: -40px;
   border: 0;
   cursor: pointer;
+  filter: invert(1);
+}
+
+.popup__favorite-btn {
+  margin-top: 15px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #ffdb63;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease;
+}
+
+.popup__favorite-btn:hover {
+  background-color: #ffeaa1;
+  transform: translateY(-2px);
+}
+
+.popup__message {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
+}
+
+.popup__link {
+  display: inline-block;
+  margin-top: 18px;
+  background-color: #ffdb63;
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease;
+}
+
+.popup__link:hover {
+  background-color: #ffeaa1;
+  color: #000;
+  transform: translateY(-2px);
+}
+
+@media screen and (min-width: 545px) and (max-width: 1024px) {
+  .popup__content {
+    max-width: 500px;
+    width: 90%;
+    padding: 16px;
+  }
+
+  .popup__image {
+    height: 35vh;
+  }
+
+  .popup__close {
+    width: 32px;
+    height: 32px;
+    top: -25px;
+    right: -25px;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 544px) {
+  .popup__content {
+    max-width: 90%;
+    width: 90%;
+    padding: 16px;
+  }
+
+  .popup__image {
+    height: 30vh;
+  }
+
+  .popup__close {
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    filter: invert(1);
+  }
+
+  .popup__title {
+    font-size: 22px;
+    margin-top: 12px;
+  }
+
+  .popup__favorite-btn,
+  .popup__link {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px 0;
+  }
 }
