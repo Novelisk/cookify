@@ -2,6 +2,13 @@
 
 Nota aclaratoria: Busca recetas en inglés, es una api en inglés.
 
+# Preview
+
+![Login-Landing Page](./frontend/src/assets/images/ss/cookify_login.jpg)
+![Register](./frontend/src/assets/images/ss/cookify_register.png)
+![UserSearch](./frontend//src/assets/images/ss/cookify_explorar.png)
+![Recipes](./frontend/src/assets/images/ss/cookify_recetas.png)
+
 # Entorno:
 
 Frontend: https://cookify.mooo.com
