@@ -28,6 +28,7 @@ const allowedOrigins = [
   'http://127.0.0.1:5173',
   'https://cookify.mooo.com',
   'https://www.cookify.mooo.com',
+  'https://cookify-api.onrender.com', // Cambiar por el dominio de Render
 ];
 
 app.use(
@@ -66,6 +67,12 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
+app.get('/', (req, res) => res.send('Cookify backend OK'));
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok ' });
+});
+
 app.use((req, res, next) => {
   console.log('Ruta no encontrada:', req.method, req.originalUrl);
   res.status(404).send({ message: 'Esta ruta no existe.' });
@@ -74,8 +81,6 @@ app.use((req, res, next) => {
 app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
-
-app.get('/', (req, res) => res.send('Cookify backend OK'));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server listening at port: ${PORT}`));
