@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.cookify.mooo.com/api';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const handleReponse = async (res) => {
   const data = await res.json();

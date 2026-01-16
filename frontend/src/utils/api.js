@@ -1,5 +1,5 @@
 const MEALDB_URL = 'https://www.themealdb.com/api/json/v1/1';
-const BACKEND_URL = 'https://api.cookify.mooo.com/api';
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
 
 // MEALDB URL
 
