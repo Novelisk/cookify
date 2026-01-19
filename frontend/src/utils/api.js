@@ -6,7 +6,7 @@ const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
 export async function searchMeals(query) {
   try {
     const res = await fetch(
-      `${MEALDB_URL}/search.php?s=${encodeURIComponent(query)}`
+      `${MEALDB_URL}/search.php?s=${encodeURIComponent(query)}`,
     );
     const data = await res.json();
     return data.meals || [];
@@ -44,13 +44,13 @@ async function handleResponse(res) {
   const data = await res.json().catch(() => ({}));
   if (!res.ok)
     throw new Error(
-      data.message || 'Error al solicitar respuesta del servidor.'
+      data.message || 'Error al solicitar respuesta del servidor.',
     );
   return data;
 }
 
 export async function signUp(userdata) {
-  const res = await fetch(`${BACKEND_URL}/auth/signup`, {
+  const res = await fetch(`${BACKEND_URL}/api/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userdata),
@@ -59,7 +59,7 @@ export async function signUp(userdata) {
 }
 
 export async function signIn(credentials) {
-  const res = await fetch(`${BACKEND_URL}/auth/signin`, {
+  const res = await fetch(`${BACKEND_URL}/api/auth/signin`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
@@ -93,7 +93,7 @@ export async function addFavorite(token, meal) {
     const data = await res.json();
     if (!res.ok)
       throw new Error(
-        data.message || 'No se pudo guardar la receta en favoritos'
+        data.message || 'No se pudo guardar la receta en favoritos',
       );
     return data;
   } catch (err) {
