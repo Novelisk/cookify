@@ -11,8 +11,8 @@ Nota aclaratoria: Busca recetas en inglés, es una api en inglés.
 
 # Entorno:
 
-Frontend: https://cookify-black.vercel.app
-Backend: https://cookify-backend-hmur.onrender.com
+- Frontend: https://cookify-black.vercel.app
+- Backend: https://cookify-backend-hmur.onrender.com
 
 # Descripción General:
 
@@ -20,12 +20,6 @@ Cookify es una app web que permite a los usuarios buscar recetas por nombre, ver
 El desarrollo fue con React y Vite en el frontend y Node.js, Express y MongoDB en el backend, con despliegue completo en una VM Ubuntu de Google Cloud, manejando seguridad HTTPS mediante Nginx y Certbot.
 
 El sistema implementa: - Búsqueda de recetas desde TheMealDB API. - Visualización en tarjetas (cards) con imagen, nombre y descripción de la receta. - Sistema de usuarios con registro (signup), login y gestión de favoritos. - Persistencia en base de datos MongoDB. - Despliegue completo con Nginx, PM2 y Certbot SSL.
-
-# Arquitectura General:
-
-Frontend: React (Vite) en HTTPS cookify.mooo.com
-Backend: Express, MongoDB en HTTPS api.cookify.mooo.com
-Servidor: Nginx y PM2
 
 # Frontend:
 

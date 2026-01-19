@@ -68,7 +68,7 @@ export async function signIn(credentials) {
 }
 
 export async function getUserProfile(token) {
-  const res = await fetch(`${BACKEND_URL}/users/me`, {
+  const res = await fetch(`${BACKEND_URL}/api/users/me`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return handleResponse(res);
@@ -76,7 +76,7 @@ export async function getUserProfile(token) {
 
 export async function addFavorite(token, meal) {
   try {
-    const res = await fetch(`${BACKEND_URL}/users/favorites`, {
+    const res = await fetch(`${BACKEND_URL}/api/users/favorites`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ export async function addFavorite(token, meal) {
 
 export async function getFavorites(token) {
   try {
-    const res = await fetch(`${BACKEND_URL}/users/me`, {
+    const res = await fetch(`${BACKEND_URL}/api/users/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -120,7 +120,7 @@ export async function getFavorites(token) {
 
 export async function removeFavorite(token, recipeId) {
   try {
-    const res = await fetch(`${BACKEND_URL}/users/favorites/${recipeId}`, {
+    const res = await fetch(`${BACKEND_URL}/api/users/favorites/${recipeId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
