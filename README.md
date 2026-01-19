@@ -11,8 +11,8 @@ Nota aclaratoria: Busca recetas en inglés, es una api en inglés.
 
 # Entorno:
 
-Frontend: https://cookify.mooo.com
-Backend: https://api.cookify.mooo.com
+Frontend: https://cookify-black.vercel.app
+Backend: https://cookify-backend-hmur.onrender.com
 
 # Descripción General:
 
