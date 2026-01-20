@@ -19,7 +19,7 @@ const app = express();
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
-  })
+  }),
 );
 
 const allowedOrigins = [
@@ -43,7 +43,7 @@ app.use(
     credentials: true,
     methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin'],
-  })
+  }),
 );
 
 const limiter = rateLimit({
@@ -62,6 +62,8 @@ app.use(limiter);
 app.use(requestLogger);
 
 app.use(express.json());
+
+app.options('*', cors());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
