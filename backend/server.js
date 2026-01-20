@@ -10,6 +10,7 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
+import { boolean } from 'joi';
 
 dotenv.config();
 connectDB();
@@ -30,38 +31,25 @@ const allowedOrigins = [
   'https://cookify-backend-hmur.onrender.com',
 ].filter(Boolean);
 
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         console.error(`Bloqueado por CORS: ${origin}.`);
-//         callback(new Error('CORS not allowed for this origin.'));
-//       }
-//     },
-//     credentials: true,
-//     methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
-//     allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin'],
-//   }),
-// );
-
 app.use(
   cors({
     origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
       const allowedOrigins = [
         'http://localhost:5173',
         'http://127.0.0.1:5173',
         process.env.FRONTEND_URL,
       ].filter(Boolean);
 
-      if (!origin) return callback(null, true);
+      const isAllowed =
+        allowedOrigins.includes(origin) || origin.endsWith('.vercel.app');
 
-      if (allowedOrigins.includes(origin)) {
+      if (isAllowed) {
         return callback(null, true);
       }
 
-      console.error('CORS blocked for:', origin);
+      console.error('CORS bloqueado para:', origin);
       return callback(null, false);
     },
     credentials: true,
