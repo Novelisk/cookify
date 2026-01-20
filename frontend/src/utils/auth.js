@@ -10,7 +10,7 @@ const handleReponse = async (res) => {
 };
 
 export async function signIn(email, password) {
-  const res = await fetch(`${BASE_URL}/auth/signin`, {
+  const res = await fetch(`${BASE_URL}/api/auth/signin`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
@@ -19,7 +19,7 @@ export async function signIn(email, password) {
 }
 
 export async function signUp({ name, email, password }) {
-  const res = await fetch(`${BASE_URL}/auth/signup`, {
+  const res = await fetch(`${BASE_URL}/api/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, email, password }),
@@ -29,7 +29,7 @@ export async function signUp({ name, email, password }) {
 
 export async function validateToken(token) {
   try {
-    const res = await fetch(`${BASE_URL}/users/me`, {
+    const res = await fetch(`${BASE_URL}/api/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (res.status === 401) {
