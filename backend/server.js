@@ -10,7 +10,6 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
-import { boolean } from 'joi';
 
 dotenv.config();
 connectDB();
