@@ -27,22 +27,46 @@ const allowedOrigins = [
   'https://localhost:5173',
   'http://127.0.0.1:5173',
   process.env.FRONTEND_URL,
-  'https://cookify-api.onrender.com', // Cambiar por el dominio de Render
+  'https://cookify-backend-hmur.onrender.com',
 ].filter(Boolean);
+
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         console.error(`Bloqueado por CORS: ${origin}.`);
+//         callback(new Error('CORS not allowed for this origin.'));
+//       }
+//     },
+//     credentials: true,
+//     methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+//     allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin'],
+//   }),
+// );
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.error(`Bloqueado por CORS: ${origin}.`);
-        callback(new Error('CORS not allowed for this origin.'));
+      const allowedOrigins = [
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        process.env.FRONTEND_URL,
+      ].filter(Boolean);
+
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
+
+      console.error('CORS blocked for:', origin);
+      return callback(null, false);
     },
     credentials: true,
-    methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   }),
 );
 
@@ -62,8 +86,6 @@ app.use(limiter);
 app.use(requestLogger);
 
 app.use(express.json());
-
-app.options('*', cors());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
